@@ -1,0 +1,6 @@
+{
+  "name": "CopyrightArena",
+  "description": "A decentralized on-chain intellectual property arbitration platform where creators register works, define license terms, and resolve infringement disputes through AI consensus arbitration on GenLayer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
