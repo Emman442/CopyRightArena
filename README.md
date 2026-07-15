@@ -1,143 +1,241 @@
-# Sample GenLayer project
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Discord](https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white)](https://discord.gg/8Jm4v89VAu)
-[![Telegram](https://img.shields.io/badge/Telegram--T.svg?style=social&logo=telegram)](https://t.me/genlayer)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/yeagerai.svg?style=social&label=Follow%20%40GenLayer)](https://x.com/GenLayer)
-[![GitHub star chart](https://img.shields.io/github/stars/yeagerai/genlayer-project-boilerplate?style=social)](https://star-history.com/#yeagerai/genlayer-js)
+# CopyrightArena
 
-## About
-This project includes the boilerplate code for a GenLayer use case implementation, specifically a football bets game.
+> AI-native intellectual property registration and decentralized copyright arbitration powered by GenLayer.
 
-## What's included
-- An example intelligent contract (Football Bets) with web access and LLM integration
-- **Direct mode tests** — fast, in-memory unit tests with web/LLM mocking (~ms per test)
-- **Integration tests** — full end-to-end tests against GenLayer Studio
-- **Contract linting** — static analysis to catch common contract issues before deployment
-- **CI pipeline** — GitHub Actions workflow for linting and direct tests
-- A production-ready Next.js 15 frontend with TypeScript, TanStack Query, and Radix UI
-- Configuration file template and deployment scripts
+CopyrightArena is a decentralized platform that allows creators to register digital works, define licensing terms, prove ownership using cryptographic hashes, and resolve copyright disputes through AI consensus on GenLayer.
 
-## Requirements
-- Python >= 3.12
-- [GenLayer CLI](https://github.com/genlayerlabs/genlayer-cli) globally installed: `npm install -g genlayer`
-- GenLayer Studio (for integration tests and deployment): Install from [Docs](https://docs.genlayer.com/developers/intelligent-contracts/tooling-setup#using-the-genlayer-studio) or use the hosted [GenLayer Studio](https://studio.genlayer.com/)
+Instead of relying on centralized copyright offices or expensive legal processes, CopyrightArena enables creators to protect their work on-chain while using GenLayer's AI-powered validator network to analyze infringement claims and produce transparent arbitration verdicts.
 
-## Project Structure
+---
 
-```
-contracts/              # Python intelligent contracts
-tests/
-  direct/               # Fast in-memory tests (no Studio required)
-    test_create_bet.py   # Bet creation logic
-    test_resolve_bet.py  # Bet resolution with web/LLM mocks
-    test_views.py        # Read-only view methods
-  integration/           # Full tests against GenLayer Studio
-    test_football_bets.py
-    fixtures.py          # Expected state fixtures
-frontend/               # Next.js 15 app (TypeScript, TanStack Query, Radix UI)
-deploy/                 # TypeScript deployment scripts
-gltest.config.yaml      # Test runner network configuration
-pyproject.toml          # Python/pytest configuration
-.github/workflows/      # CI pipeline
-```
+# Why CopyrightArena?
 
-## Quick Start
+Digital creators publish millions of images, videos, music tracks, articles, designs, and code repositories every day.
 
-### 1. Set up Python environment
+When their work is copied, they often have only two options:
 
-```shell
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+* Ignore the infringement.
+* Spend significant time and money pursuing legal action.
 
-### 2. Lint your contracts
+CopyrightArena introduces a programmable alternative.
 
-Run the GenVM linter to catch issues before deployment:
+Creators can register ownership, define licensing rules, submit infringement complaints, and let decentralized AI validators evaluate evidence using GenLayer's Optimistic Democracy consensus.
 
-```shell
-genvm-lint check contracts/football_bets.py
-```
+---
 
-The linter catches:
-- Forbidden imports and non-deterministic calls
-- Invalid storage types (must use `TreeMap`, `DynArray`, `u256`, etc.)
-- Missing decorators and return type annotations
-- Non-deterministic operations outside equivalence principle blocks
-- And [20+ other rules](https://github.com/genlayerlabs/genvm-linter)
+# Core Features
 
-### 3. Run direct mode tests
+## Register Creative Works
 
-Direct mode tests run contracts in-memory without needing GenLayer Studio. They use mocks for web requests and LLM calls, giving you fast feedback (~milliseconds per test):
+Creators can permanently register ownership of digital content.
 
-```shell
-pytest tests/direct/ -v
-```
+Each registration includes:
 
-Direct mode features used in these tests:
-- `direct_deploy("contracts/file.py")` — deploy contract in memory
-- `direct_vm.sender = address` — set transaction sender
-- `direct_vm.mock_web(pattern, response)` — mock HTTP/render calls
-- `direct_vm.mock_llm(pattern, response)` — mock LLM responses
-- `direct_vm.expect_revert("message")` — assert expected failures
-- `direct_vm.clear_mocks()` — reset mocks between calls
+* Title
+* Content URL
+* SHA-256 content hash
+* Content type
+* License type
+* Creator wallet
+* Timestamp
 
-### 4. Deploy the contract
+The SHA-256 fingerprint provides a cryptographic proof of the exact work that was registered.
 
-1. Choose your network: `genlayer network`
-2. Deploy: `genlayer deploy` (runs the script in `/deploy/deployScript.ts`)
+---
 
-### 5. Run integration tests
+## Flexible Licensing
 
-Integration tests deploy the contract to GenLayer Studio and test with real consensus:
+Creators choose how others may use their work.
 
-```shell
-gltest tests/integration/ -v -s
-```
+Supported licenses include:
 
-These require GenLayer Studio running (local or hosted).
+* All Rights Reserved
+* Attribution Required
+* Non-Commercial
+* No Derivatives
+* CC BY
+* CC BY-NC
+* CC BY-ND
+* CC BY-SA
 
-### 6. Set up the frontend
+These licensing terms become part of the on-chain record.
 
-1. Copy `frontend/.env.example` to `frontend/.env`
-2. Add your deployed contract address as `NEXT_PUBLIC_CONTRACT_ADDRESS`
-3. Run:
+---
 
-```shell
-cd frontend
-npm install
-npm run dev
-```
+## File Copyright Disputes
 
-The app will be available at http://localhost:3000/.
+If someone believes their work has been copied without permission, they can file a dispute.
 
-## How the Football Bets Contract Works
+A dispute contains:
 
-1. **Creating Bets**: Users bet on a football match by providing the game date, teams, and predicted winner.
-2. **Resolving Bets**: After the match, the contract fetches results from BBC Sport, uses an LLM to extract the score, and validates via the equivalence principle.
-3. **Points**: Correct predictions earn points. Users can query their points or the leaderboard.
+* Original work
+* Allegedly infringing work
+* Complaint
+* Supporting evidence
+* Filing timestamp
 
-## Testing Strategy
+Each dispute becomes a permanent on-chain case.
 
-| Test Type | Command | Speed | Requires Studio |
-|-----------|---------|-------|-----------------|
-| **Lint** | `genvm-lint check contracts/*.py` | ~250ms | No |
-| **Direct** | `pytest tests/direct/ -v` | ~ms/test | No |
-| **Integration** | `gltest tests/integration/ -v -s` | ~min/test | Yes |
+---
 
-**Recommended workflow:**
-1. Lint after every contract change
-2. Run direct tests frequently during development
-3. Run integration tests before deployment to verify consensus behavior
+## AI Arbitration
 
-For AI coding agents (Claude Code, Cursor, etc.), the linter and direct tests provide the fast feedback loop needed for iterative development without requiring a running Studio instance.
+Once evidence has been submitted, anyone can trigger arbitration.
 
-## Community
-- **[Discord](https://discord.gg/8Jm4v89VAu)**: Discussions, support, and announcements
-- **[Telegram](https://t.me/genlayer)**: Informal chats and quick updates
+GenLayer validators independently:
 
-## Documentation
-For detailed information, see our [documentation](https://docs.genlayer.com/).
+* Retrieve both works
+* Analyze similarities
+* Consider licensing permissions
+* Evaluate transformation and originality
+* Produce an independent legal assessment
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+The network then reaches consensus and stores the final verdict permanently on-chain.
+
+Possible outcomes include:
+
+* Violation Found
+* Partial Violation
+* No Violation
+* Inconclusive
+
+---
+
+## Immutable Verdict History
+
+Every arbitration result is permanently recorded.
+
+Each verdict includes:
+
+* Verdict type
+* Confidence score
+* Detailed reasoning
+* Validator consensus
+* Timestamp
+
+Nothing can be altered after consensus is reached.
+
+---
+
+## Public Registry
+
+Anyone can browse registered works and inspect:
+
+* Ownership
+* Registration date
+* License
+* Status
+* Existing disputes
+
+This creates a transparent copyright registry that anyone can verify.
+
+---
+
+# How It Works
+
+### 1. Register
+
+A creator uploads:
+
+* Content URL
+* SHA-256 hash
+* Metadata
+* License
+
+The work is permanently registered on GenLayer.
+
+↓
+
+### 2. Publish
+
+The creator distributes the content normally.
+
+↓
+
+### 3. Detect Infringement
+
+Another work appears that allegedly violates the creator's rights.
+
+↓
+
+### 4. File Dispute
+
+The creator submits:
+
+* Original work
+* Infringing work
+* Complaint
+* Evidence
+
+↓
+
+### 5. Trigger Arbitration
+
+GenLayer AI validators independently analyze:
+
+* Visual similarity
+* Text similarity
+* Audio similarity
+* Metadata
+* License compatibility
+
+↓
+
+### 6. Consensus
+
+Validators democratically agree on the verdict.
+
+↓
+
+### 7. Permanent Record
+
+The final decision becomes part of the immutable blockchain history.
+
+---
+
+# Built on GenLayer
+
+CopyrightArena showcases GenLayer's ability to execute non-deterministic AI reasoning directly inside intelligent contracts.
+
+The platform uses AI consensus for tasks that traditional blockchains cannot perform deterministically, including:
+
+* Copyright similarity analysis
+* Semantic reasoning
+* License interpretation
+* Evidence evaluation
+* Legal-style arbitration
+
+Rather than trusting a single AI model, multiple validators independently analyze each dispute before reaching consensus.
+
+---
+
+# Technology Stack
+
+Frontend
+
+* React
+* TypeScript
+* Tailwind CSS
+* React Query
+
+Blockchain
+
+* GenLayer
+* Intelligent Contracts (Python)
+
+AI
+
+* GenLayer Optimistic Democracy Consensus
+* Multi-validator AI arbitration
+
+
+
+# Vision
+
+CopyrightArena transforms copyright enforcement from a slow, centralized legal process into an open, AI-native protocol.
+
+Creators gain an immutable proof of ownership, programmable licensing, and decentralized dispute resolution powered entirely by intelligent contracts on GenLayer.
+
+The goal is simple:
+
+**Protect creativity with transparent, verifiable, AI-powered copyright enforcement.**
